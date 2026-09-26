@@ -6,36 +6,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
 
 :root{
-  /* --- HUB palette (index.html uses these directly — no data-theme override) ---
-     A neutral dark base plus two accents pulled from the sub-page palettes
-     (lavender from Art, cyan from Research), so the hub reads as a blend
-     of everywhere it links to. Each spoke node additionally borrows its
-     own destination page's accent color — see .node[style] overrides
-     further down and the inline --node-accent on each node in index.html. */
-  --bg:            #0E1526;
-  --bg-soft:       #141B33;
-  --surface:       #1B2340;
-  --surface-raised:#232C4C;
-  --line:          rgba(232,215,241,0.22);
-  --line-soft:     rgba(255,239,211,0.12);
+  /* --- HUB palette (index.html — no data-theme override) ---
+     Sampled from the neon-star reference image: black canvas, hot
+     pink/magenta as the lead accent, electric cyan as the second.
+     Every page now shares this near-black base — pages differ only
+     in which two neon hues from the image they lead with. */
+  --bg:            #030308;
+  --bg-rgb:        3,3,8;
+  --bg-soft:       #0D0D1A;
+  --surface:       #14141F;
+  --surface-raised:#1D1D30;
+  --line:          rgba(255,62,165,0.4);    /* magenta star outline */
+  --line-soft:     rgba(52,229,255,0.18);   /* cyan star outline */
 
-  --text:          #FFEFD3;   /* warm cream */
-  --text-dim:      #ADBDFF;   /* periwinkle */
-  --text-faint:    #6E7699;
+  --text:          #F5F2FF;
+  --text-dim:      #B4ADD6;
+  --text-faint:    #756E96;
 
-  --accent:        #E2C2FF;   /* lavender (from Art palette) */
-  --accent-soft:   rgba(226,194,255,0.18);
-  --accent-2:      #34E5FF;   /* cyan (from Research palette) */
+  --accent:        #FF3EA5;   /* neon magenta */
+  --accent-soft:   rgba(255,62,165,0.22);
+  --accent-2:      #34E5FF;   /* neon cyan */
   --accent-2-soft: rgba(52,229,255,0.18);
+
+  /* star-field background image, used sparingly as a texture on a
+     handful of surfaces — see .starfield-surface and body below */
+  --star-bg: url("../images/star-field.png");
 
   /* status colors stay constant across every page/theme so the meaning
      (complete / in progress / planned) never gets confused by re-theming */
-  --status-good:     #6FA97A;
-  --status-progress: #D8A339;
-  --status-planned:  #8891AA;
-  --status-good-soft:     rgba(111,169,122,0.18);
-  --status-progress-soft: rgba(216,163,57,0.18);
-  --status-planned-soft:  rgba(136,145,170,0.18);
+  --status-good:     #4ED483;
+  --status-progress: #FFC24B;
+  --status-planned:  #9099C9;
+  --status-good-soft:     rgba(78,212,131,0.2);
+  --status-progress-soft: rgba(255,194,75,0.2);
+  --status-planned-soft:  rgba(144,153,201,0.2);
 
   /* --- type tokens --- */
   --font-display: 'Fraunces', 'Iowan Old Style', serif;
@@ -52,106 +56,116 @@
 
 /* ============================================================
    PER-PAGE THEMES
-   Each sub-page sets <body data-theme="..."> and gets its own
-   palette, pulled from that page's reference swatch. Everything
-   else (nav, cards, buttons, status pills) is built from these
-   same variable names, so the whole page re-themes automatically.
+   All pages share the same near-black base and the same star-field
+   texture (see body + .starfield-surface below) — the neon image is
+   the color scheme now, not five separate palettes. Each page keeps
+   a signature two-color pairing pulled from that same image, so
+   there's still a way to tell pages apart at a glance without ever
+   leaving the reference photo's palette.
    ============================================================ */
 
-/* ART — gallery-wall light theme (its reference palette had no dark
-   anchor color, so the page flips light instead of being forced dark) */
+/* ART — violet + green, straight off the star outlines */
 body[data-theme="art"]{
-  --bg:            #F6EFFA;
-  --bg-soft:       #EFE0F0;
-  --surface:       #FFFFFF;
-  --surface-raised:#FBF5FF;
-  --line:          rgba(37,142,166,0.28);
-  --line-soft:     rgba(159,175,144,0.3);
+  --bg:            #05030B;
+  --bg-rgb:        5,3,11;
+  --bg-soft:       #120A1F;
+  --surface:       #180F28;
+  --surface-raised:#231539;
+  --line:          rgba(177,77,255,0.45);
+  --line-soft:     rgba(57,255,136,0.2);
 
-  --text:          #16333A;
-  --text-dim:      #4B6B70;
-  --text-faint:    #87A0A3;
+  --text:          #F2E9FF;
+  --text-dim:      #C7AAEA;
+  --text-faint:    #8A72B0;
 
-  --accent:        #258EA6;
-  --accent-soft:   rgba(37,142,166,0.14);
-  --accent-2:      #C9738A;
-  --accent-2-soft: rgba(226,177,177,0.4);
+  --accent:        #B14DFF;
+  --accent-soft:   rgba(177,77,255,0.22);
+  --accent-2:      #39FF88;
+  --accent-2-soft: rgba(57,255,136,0.18);
 }
 
-/* ELECTRONICS — dark PCB board with a neon-lime trace accent */
+/* ELECTRONICS — neon green + cyan, the PCB solder-mask hues from the image */
 body[data-theme="electronics"]{
-  --bg:            #1B1B1A;
-  --bg-soft:       #222221;
-  --surface:       #363635;
-  --surface-raised:#454540;
-  --line:          rgba(176,254,118,0.25);
-  --line-soft:     rgba(143,187,153,0.2);
+  --bg:            #030A06;
+  --bg-rgb:        3,10,6;
+  --bg-soft:       #0B1A0F;
+  --surface:       #0F2214;
+  --surface-raised:#153019;
 
-  --text:          #E9F2E2;
-  --text-dim:      #ABB8A5;
-  --text-faint:    #6E7A68;
+  --line:          rgba(57,255,106,0.45);
+  --line-soft:     rgba(52,229,255,0.2);
 
-  --accent:        #B0FE76;
-  --accent-soft:   rgba(176,254,118,0.16);
-  --accent-2:      #81E979;
-  --accent-2-soft: rgba(129,233,121,0.18);
-}
+  --text:          #E9FFEF;
+  --text-dim:      #9FE3B2;
+  --text-faint:    #5F9270;
 
-/* RESEARCH & INTERNSHIP — deep navy with bright-blue / cyan circuitry */
-body[data-theme="research"]{
-  --bg:            #001B2E;
-  --bg-soft:       #062A44;
-  --surface:       #0C3350;
-  --surface-raised:#123F60;
-  --line:          rgba(49,133,252,0.32);
-  --line-soft:     rgba(173,189,255,0.18);
-
-  --text:          #FFEFD3;
-  --text-dim:      #ADBDFF;
-  --text-faint:    #5E71A0;
-
-  --accent:        #3185FC;
-  --accent-soft:   rgba(49,133,252,0.18);
+  --accent:        #39FF6A;
+  --accent-soft:   rgba(57,255,106,0.24);
   --accent-2:      #34E5FF;
-  --accent-2-soft: rgba(52,229,255,0.18);
+  --accent-2-soft: rgba(52,229,255,0.2);
 }
 
-/* LEADERSHIP — regal dark purple, fitting a president's spotlight */
+/* RESEARCH & INTERNSHIP — bright blue + cyan */
+body[data-theme="research"]{
+  --bg:            #02040D;
+  --bg-rgb:        2,4,13;
+  --bg-soft:       #0A1330;
+  --surface:       #0D1A3D;
+  --surface-raised:#12275C;
+
+  --line:          rgba(63,140,255,0.45);
+  --line-soft:     rgba(52,229,255,0.22);
+
+  --text:          #E9F1FF;
+  --text-dim:      #9FBBE8;
+  --text-faint:    #5F76A8;
+
+  --accent:        #3F8CFF;
+  --accent-soft:   rgba(63,140,255,0.24);
+  --accent-2:      #34E5FF;
+  --accent-2-soft: rgba(52,229,255,0.2);
+}
+
+/* LEADERSHIP — purple + magenta, the regal pairing from the image */
 body[data-theme="leadership"]{
-  --bg:            #0E273C;
-  --bg-soft:       #16324A;
-  --surface:       #4A306D;
-  --surface-raised:#5C3D85;
-  --line:          rgba(161,103,165,0.35);
-  --line-soft:     rgba(211,188,204,0.2);
+  --bg:            #08020F;
+  --bg-rgb:        8,2,15;
+  --bg-soft:       #180A26;
+  --surface:       #1D0E30;
+  --surface-raised:#291441;
 
-  --text:          #E8D7F1;
-  --text-dim:      #D3BCCC;
-  --text-faint:    #8C7391;
+  --line:          rgba(194,77,255,0.45);
+  --line-soft:     rgba(255,62,165,0.22);
 
-  --accent:        #C083C4;
-  --accent-soft:   rgba(161,103,165,0.22);
-  --accent-2:      #D3BCCC;
-  --accent-2-soft: rgba(211,188,204,0.22);
+  --text:          #F3E9FF;
+  --text-dim:      #CBA9E3;
+  --text-faint:    #8A6CA8;
+
+  --accent:        #C24DFF;
+  --accent-soft:   rgba(194,77,255,0.24);
+  --accent-2:      #FF3EA5;
+  --accent-2-soft: rgba(255,62,165,0.2);
 }
 
-/* ACADEMICS — warm parchment / vintage-seal palette */
+/* ACADEMICS — orange + yellow, the warm end of the same star field */
 body[data-theme="academics"]{
-  --bg:            #280004;
-  --bg-soft:       #3A1107;
-  --surface:       #4C230A;
-  --surface-raised:#5C2E12;
-  --line:          rgba(204,201,161,0.3);
-  --line-soft:     rgba(240,255,206,0.14);
+  --bg:            #0A0502;
+  --bg-rgb:        10,5,2;
+  --bg-soft:       #1F130A;
+  --surface:       #26160B;
+  --surface-raised:#331D0F;
 
-  --text:          #F0FFCE;
-  --text-dim:      #CCC9A1;
-  --text-faint:    #8C876B;
+  --line:          rgba(255,140,63,0.45);
+  --line-soft:     rgba(255,217,63,0.22);
 
-  --accent:        #D6684A;
-  --accent-soft:   rgba(213,104,74,0.2);
-  --accent-2:      #CCC9A1;
-  --accent-2-soft: rgba(204,201,161,0.2);
+  --text:          #FFF3E3;
+  --text-dim:      #E3B98F;
+  --text-faint:    #A08060;
+
+  --accent:        #FF8C3F;
+  --accent-soft:   rgba(255,140,63,0.24);
+  --accent-2:      #FFD93F;
+  --accent-2-soft: rgba(255,217,63,0.2);
 }
 
 *{ box-sizing: border-box; }
@@ -159,12 +173,35 @@ html{ scroll-behavior: smooth; }
 
 body{
   margin: 0;
-  background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+
+  /* star-field texture as the page-wide backdrop: a per-theme tinted
+     scrim sits over the image so it reads as a faint pattern, not
+     the loud original artwork, and never fights with page content */
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(180deg, rgba(var(--bg-rgb),0.92), rgba(var(--bg-rgb),0.97)),
+    var(--star-bg);
+  background-size: auto, 300px 300px;
+  background-position: center top, center top;
+  background-repeat: no-repeat, repeat;
+  background-attachment: fixed, fixed;
+}
+
+/* shared helper: a bolder, still-tasteful dose of the same star field,
+   used only on a handful of standout surfaces (see usages below) */
+.starfield-surface{
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(165deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72)),
+    var(--star-bg);
+  background-size: cover, 220px 220px;
+  background-position: center, center;
+  background-repeat: no-repeat, repeat;
 }
 
 img{ max-width: 100%; display: block; }
@@ -204,7 +241,7 @@ p{ margin: 0; }
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  background: rgba(var(--bg-rgb), 0.86);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line-soft);
 }
@@ -327,12 +364,18 @@ p{ margin: 0; }
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: min(320px, 34vw);
-  min-width: 220px;
-  background: var(--surface);
+  width: min(260px, 27vw);
+  min-width: 190px;
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(165deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72)),
+    var(--star-bg);
+  background-size: cover, 220px 220px;
+  background-position: center, center;
+  background-repeat: no-repeat, repeat;
   border: 1px solid var(--line);
   border-radius: var(--radius-l);
-  padding: 28px 24px;
+  padding: 22px 20px;
   text-align: center;
   box-shadow: 0 30px 60px -20px rgba(0,0,0,0.55);
   z-index: 5;
@@ -340,17 +383,17 @@ p{ margin: 0; }
 }
 
 .bio-card .portrait{
-  width: 96px; height: 96px;
+  width: 76px; height: 76px;
   border-radius: 50%;
-  margin: 0 auto 16px;
+  margin: 0 auto 14px;
   overflow: hidden;
   border: 2px solid var(--accent);
-  box-shadow: 0 0 0 6px var(--accent-soft);
+  box-shadow: 0 0 0 5px var(--accent-soft);
 }
 .bio-card .portrait img{ width: 100%; height: 100%; object-fit: cover; }
 
 .bio-card h1{
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: var(--text);
 }
 
@@ -363,7 +406,7 @@ p{ margin: 0; }
 
 .bio-card p.bio-text{
   margin-top: 14px;
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   color: var(--text-dim);
   line-height: 1.5;
 }
@@ -404,7 +447,7 @@ p{ margin: 0; }
 
 .node .icon-ring{
   position: relative;
-  width: 96px; height: 96px;
+  width: 195px; height: 195px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -417,7 +460,7 @@ p{ margin: 0; }
      destination page's own accent color */
   content: "";
   position: absolute;
-  inset: -14px;
+  inset: -27px;
   border-radius: 50%;
   border: 1px solid var(--node-accent, var(--accent));
   opacity: 0;
@@ -428,9 +471,9 @@ p{ margin: 0; }
 .node .icon-ring::after{
   content: "";
   position: absolute;
-  inset: -14px;
+  inset: -27px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--node-accent, var(--accent)) 22%, transparent);
+  background: var(--node-glow, var(--accent-soft));
   filter: blur(6px);
   opacity: 0;
   transform: scale(0.7);
@@ -617,7 +660,13 @@ p{ margin: 0; }
 .widget{
   position: relative;
   z-index: 1;
-  background: var(--surface);
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(165deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72)),
+    var(--star-bg);
+  background-size: cover, 220px 220px;
+  background-position: center, center;
+  background-repeat: no-repeat, repeat;
   border: 1px solid var(--line-soft);
   border-radius: var(--radius-m);
   overflow: visible;
@@ -946,7 +995,13 @@ p{ margin: 0; }
   grid-template-columns: 320px 1fr;
   gap: 40px;
   padding: 36px;
-  background: var(--surface);
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(165deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72)),
+    var(--star-bg);
+  background-size: cover, 220px 220px;
+  background-position: center, center;
+  background-repeat: no-repeat, repeat;
   border: 1px solid var(--line);
   border-radius: var(--radius-l);
   margin-bottom: 64px;

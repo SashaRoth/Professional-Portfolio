@@ -1,0 +1,1131 @@
+/* ============================================================
+   PORTFOLIO SITE — SHARED STYLESHEET
+   Edit the tokens in :root to retheme the whole site at once.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root{
+  /* --- HUB palette (index.html — no data-theme override) ---
+     Built entirely from two of the sub-page swatches: Research's navy
+     + cream + periwinkle, and Art's lavender. Surfaces are pre-blended
+     mixes of those same literal colors (computed ahead of time, not
+     via CSS color-mix(), so this renders identically in every browser
+     — including older embedded webviews like VSCode's preview pane).
+     Each spoke node additionally borrows its own destination page's
+     accent color via the inline --node-accent set on each node in
+     index.html. */
+  --bg:            #001B2E;   /* Research: near-black navy */
+  --bg-rgb:        0,27,46;
+  --bg-soft:       #22344D;   /* navy + 15% lavender */
+  --surface:       #485071;   /* navy + 32% lavender */
+  --surface-raised:#6C6B92;   /* navy + 48% lavender */
+  --line:          rgba(226,194,255,0.3);   /* Art: lavender */
+  --line-soft:     rgba(255,239,211,0.14);  /* Research: cream */
+
+  --text:          #FFEFD3;   /* Research: cream */
+  --text-dim:      #ADBDFF;   /* Research: periwinkle */
+  --text-faint:    #5F74A1;   /* periwinkle + 45% navy */
+
+  --accent:        #E2C2FF;   /* Art: lavender */
+  --accent-soft:   rgba(226,194,255,0.2);
+  --accent-2:      #34E5FF;   /* Research: cyan */
+  --accent-2-soft: rgba(52,229,255,0.2);
+
+  /* status colors stay constant across every page/theme so the meaning
+     (complete / in progress / planned) never gets confused by re-theming */
+  --status-good:     #6FA97A;
+  --status-progress: #D8A339;
+  --status-planned:  #8891AA;
+  --status-good-soft:     rgba(111,169,122,0.18);
+  --status-progress-soft: rgba(216,163,57,0.18);
+  --status-planned-soft:  rgba(136,145,170,0.18);
+
+  /* --- type tokens --- */
+  --font-display: 'Fraunces', 'Iowan Old Style', serif;
+  --font-body:    'IBM Plex Sans', -apple-system, sans-serif;
+  --font-mono:    'IBM Plex Mono', 'SF Mono', monospace;
+
+  /* --- layout tokens --- */
+  --radius-s:  6px;
+  --radius-m:  12px;
+  --radius-l:  20px;
+  --max-width: 1180px;
+  --nav-h:     72px;
+}
+
+/* ============================================================
+   PER-PAGE THEMES
+   Every value below is either a literal color straight from that
+   page's 5-color reference swatch, or a pre-computed blend of two
+   of that page's own colors (used only where a mid-step is needed,
+   e.g. a card surface between the bg and an accent — the comment
+   above each one says exactly which two colors and ratio). Nothing
+   here is an invented hue outside the reference palette, and none
+   of it depends on CSS color-mix() support.
+   ============================================================ */
+
+/* ART swatch: 258EA6 · 549F93 · 9FAF90 · E2B1B1 · E2C2FF
+   No color in this one is dark enough to anchor a dark theme, so
+   the page runs light instead — gallery-wall paper, not forced navy. */
+body[data-theme="art"]{
+  --bg:            #E2C2FF;
+  --bg-rgb:        226,194,255;
+  --bg-soft:       #E2B1B1;
+  --surface:       #F2E4FF;   /* lavender + 55% white */
+  --surface-raised:#F5E4E4;   /* dusty pink + 65% white */
+  --line:          rgba(37,142,166,0.4);
+  --line-soft:     rgba(159,175,144,0.4);
+
+  --text:          #185C6C;   /* teal + 35% black */
+  --text-dim:      #258EA6;
+  --text-faint:    #458279;   /* teal-green + 18% black */
+
+  --accent:        #258EA6;
+  --accent-soft:   rgba(37,142,166,0.16);
+  --accent-2:      #549F93;
+  --accent-2-soft: rgba(84,159,147,0.22);
+}
+
+/* ELECTRONICS swatch: 363635 · 595A4A · B0FE76 · 81E979 · 8FBB99
+   dark PCB board — every surface step is charcoal blended toward olive. */
+body[data-theme="electronics"]{
+  --bg:            #363635;
+  --bg-rgb:        54,54,53;
+  --bg-soft:       #41413B;   /* charcoal + 30% olive */
+  --surface:       #595A4A;
+  --surface-raised:#6F816A;   /* olive + 40% sage */
+  --line:          rgba(176,254,118,0.32);
+  --line-soft:     rgba(143,187,153,0.3);
+
+  --text:          #E3EEE6;   /* sage + 75% white */
+  --text-dim:      #8FBB99;
+  --text-faint:    #A4A49B;   /* olive + 45% white */
+
+  --accent:        #B0FE76;
+  --accent-soft:   rgba(176,254,118,0.18);
+  --accent-2:      #81E979;
+  --accent-2-soft: rgba(129,233,121,0.2);
+}
+
+/* RESEARCH & INTERNSHIP swatch: ADBDFF · 001B2E · 3185FC · 34E5FF · FFEFD3
+   deep navy, with surfaces stepped up toward bright blue. */
+body[data-theme="research"]{
+  --bg:            #001B2E;
+  --bg-rgb:        0,27,46;
+  --bg-soft:       #092E53;   /* navy + 18% bright blue */
+  --surface:       #114076;   /* navy + 35% bright blue */
+  --surface-raised:#195299;   /* navy + 52% bright blue */
+  --line:          rgba(49,133,252,0.38);
+  --line-soft:     rgba(173,189,255,0.22);
+
+  --text:          #FFEFD3;
+  --text-dim:      #ADBDFF;
+  --text-faint:    #5F74A1;   /* periwinkle + 45% navy */
+
+  --accent:        #3185FC;
+  --accent-soft:   rgba(49,133,252,0.2);
+  --accent-2:      #34E5FF;
+  --accent-2-soft: rgba(52,229,255,0.2);
+}
+
+/* LEADERSHIP swatch: E8D7F1 · D3BCCC · A167A5 · 4A306D · 0E273C
+   regal dark purple — surfaces stepped from navy up into the purples. */
+body[data-theme="leadership"]{
+  --bg:            #0E273C;
+  --bg-rgb:        14,39,60;
+  --bg-soft:       #1D2948;   /* navy + 25% deep purple */
+  --surface:       #4A306D;
+  --surface-raised:#6D4683;   /* deep purple + 40% magenta */
+  --line:          rgba(161,103,165,0.4);
+  --line-soft:     rgba(211,188,204,0.24);
+
+  --text:          #E8D7F1;
+  --text-dim:      #D3BCCC;
+  --text-faint:    #7A798B;   /* dusty mauve + 45% navy */
+
+  --accent:        #A167A5;
+  --accent-soft:   rgba(161,103,165,0.24);
+  --accent-2:      #D3BCCC;
+  --accent-2-soft: rgba(211,188,204,0.24);
+}
+
+/* ACADEMICS swatch: CCC9A1 · F0FFCE · A53F2B · 4C230A · 280004
+   warm parchment-and-seal — surfaces stepped from maroon up into rust. */
+body[data-theme="academics"]{
+  --bg:            #280004;
+  --bg-rgb:        40,0,4;
+  --bg-soft:       #310906;   /* maroon + 25% dark brown */
+  --surface:       #4C230A;
+  --surface-raised:#702E17;   /* dark brown + 40% rust */
+  --line:          rgba(204,201,161,0.4);
+  --line-soft:     rgba(240,255,206,0.18);
+
+  --text:          #F0FFCE;
+  --text-dim:      #CCC9A1;
+  --text-faint:    #826F5A;   /* khaki + 45% maroon */
+
+  --accent:        #A53F2B;
+  --accent-soft:   rgba(165,63,43,0.24);
+  --accent-2:      #CCC9A1;
+  --accent-2-soft: rgba(204,201,161,0.22);
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img{ max-width: 100%; display: block; }
+
+a{ color: inherit; text-decoration: none; }
+
+h1, h2, h3{
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+p{ margin: 0; }
+
+::selection{ background: var(--accent-soft); }
+
+:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-s);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ============================================================
+   TOP NAV — shared across sub-pages (not shown on the hub)
+   ============================================================ */
+.topnav{
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(var(--bg-rgb), 0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.topnav .home-link{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.topnav .home-link .mark{
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.topnav .home-link .mark img{ width: 100%; height: 100%; object-fit: cover; }
+
+.topnav .crumb{
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.topnav .crumb span{ color: var(--accent); }
+
+.page-header{
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 64px 32px 40px;
+}
+
+.page-header .eyebrow{
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-2);
+  margin-bottom: 14px;
+}
+
+.page-header h1{
+  font-size: clamp(2.1rem, 4vw, 3rem);
+  color: var(--text);
+  max-width: 700px;
+}
+
+.page-header p.dek{
+  margin-top: 16px;
+  max-width: 560px;
+  color: var(--text-dim);
+  font-size: 1.05rem;
+}
+
+.page-shell{
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 32px 120px;
+}
+
+/* generic empty-state note for "add your own" guidance comments in-page */
+.builder-note{
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-m);
+  padding: 14px 18px;
+  margin-bottom: 36px;
+}
+
+/* ============================================================
+   HUB PAGE (index.html) — spiderweb / radial navigation
+   ============================================================ */
+
+.hub{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* faint ambient glow behind everything, purely decorative */
+.hub::before{
+  content: "";
+  position: absolute;
+  width: 1100px; height: 1100px;
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 62%);
+  pointer-events: none;
+}
+
+.web{
+  position: relative;
+  width: min(900px, 92vw);
+  aspect-ratio: 1 / 1;
+}
+
+.web-lines{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.web-lines line{
+  stroke: var(--line);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 7;
+}
+.web-lines circle.orbit{
+  fill: none;
+  stroke: var(--line-soft);
+  stroke-width: 1;
+}
+
+/* central bio card */
+.bio-card{
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(320px, 34vw);
+  min-width: 220px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.55);
+  z-index: 5;
+  animation: hub-fade-in 0.7s ease both;
+}
+
+.bio-card .portrait{
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  overflow: hidden;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 6px var(--accent-soft);
+}
+.bio-card .portrait img{ width: 100%; height: 100%; object-fit: cover; }
+
+.bio-card h1{
+  font-size: 1.4rem;
+  color: var(--text);
+}
+
+.bio-card .role{
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-2);
+  margin-top: 6px;
+}
+
+.bio-card p.bio-text{
+  margin-top: 14px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.bio-card .bio-links{
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 18px;
+}
+.bio-card .bio-links a{
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.bio-card .bio-links a:hover{
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* nodes positioned around the web via inline --x / --y percentages */
+.node{
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  z-index: 4;
+  animation: hub-fade-in 0.7s ease both;
+  animation-delay: var(--delay, 0s);
+}
+
+.node .icon-ring{
+  position: relative;
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node .icon-ring::before{
+  /* halo, hidden until hover — color comes from the inline --node-accent
+     set on each <a class="node">, so every spoke glows in its
+     destination page's own accent color */
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 1px solid var(--node-accent, var(--accent));
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.node .icon-ring::after{
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: var(--node-glow, var(--accent-soft));
+  filter: blur(6px);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: -1;
+}
+
+.node .icon-ring img{
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.node .label{
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  transition: color 0.2s ease;
+  max-width: 120px;
+}
+
+.node:hover .icon-ring img,
+.node:focus-visible .icon-ring img{
+  transform: scale(1.14);
+  border-color: var(--node-accent, var(--accent));
+}
+.node:hover .icon-ring::before,
+.node:focus-visible .icon-ring::before{
+  opacity: 1;
+  transform: scale(1);
+}
+.node:hover .icon-ring::after,
+.node:focus-visible .icon-ring::after{
+  opacity: 1;
+  transform: scale(1);
+}
+.node:hover .label,
+.node:focus-visible .label{
+  color: var(--node-accent, var(--accent));
+}
+
+@keyframes hub-fade-in{
+  from{ opacity: 0; transform: translate(-50%, -46%); }
+  to{ opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@keyframes orbit-spin{
+  from{ transform: rotate(0deg); }
+  to{ transform: rotate(360deg); }
+}
+.web-lines .orbit-group{
+  transform-origin: 450px 450px;
+  animation: orbit-spin 160s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .web-lines .orbit-group{ animation: none; }
+}
+
+/* small screens: collapse the web into a stacked list */
+@media (max-width: 720px){
+  .hub{ min-height: auto; padding: 40px 20px 60px; }
+  .web{ width: 100%; aspect-ratio: auto; }
+  .web-lines{ display: none; }
+  .bio-card{
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto 32px;
+    animation: none;
+  }
+  .node{
+    position: static;
+    transform: none;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 16px;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto 4px;
+    padding: 12px 8px;
+    animation: none;
+  }
+  .node .icon-ring{ width: 64px; height: 64px; flex-shrink: 0; }
+  .node .icon-ring::before,
+  .node .icon-ring::after{ inset: -8px; }
+  .node .label{ text-align: left; max-width: none; font-size: 0.95rem; }
+  .node-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* ============================================================
+   ART PAGE (art.html) — collage / grid gallery
+   ============================================================ */
+
+.art-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 160px;
+  grid-auto-flow: dense;
+  gap: 14px;
+}
+
+.art-item{
+  position: relative;
+  grid-column: span 1;
+  grid-row: span 1;
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+}
+
+/* size variants — apply one of these classes to make a piece
+   take up more room in the collage. mix and match freely. */
+.art-item.w2{ grid-column: span 2; }
+.art-item.h2{ grid-row: span 2; }
+.art-item.w2.h2{ grid-column: span 2; grid-row: span 2; }
+
+.art-item img{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.art-item:hover img{
+  transform: scale(1.06);
+}
+
+.art-item .caption{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(10,13,26,0.92) 0%, rgba(10,13,26,0.35) 55%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.art-item:hover .caption,
+.art-item:focus-within .caption{
+  opacity: 1;
+}
+
+.art-item .caption .piece-title{
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.art-item .caption .piece-desc{
+  margin-top: 4px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+@media (max-width: 900px){
+  .art-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px){
+  .art-grid{ grid-template-columns: 1fr; grid-auto-rows: 220px; }
+  .art-item.w2{ grid-column: span 1; }
+}
+
+/* ============================================================
+   ELECTRONICS PAGE (electronics.html) — project widgets
+   ============================================================ */
+
+.widget-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 44px 28px;
+}
+
+.widget{
+  position: relative;
+  z-index: 1;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-m);
+  overflow: visible;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.widget:hover,
+.widget:focus-within{
+  border-color: var(--line);
+  transform: translateY(-3px);
+  /* lift above neighboring cards so the bubbles below never render
+     underneath the widget to its right/left/below */
+  z-index: 30;
+}
+
+.widget .thumb{
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: var(--radius-m) var(--radius-m) 0 0;
+}
+.widget .thumb img{ width: 100%; height: 100%; object-fit: cover; }
+
+.widget .widget-body{ padding: 18px 18px 16px; }
+
+.widget h3{ font-size: 1.05rem; color: var(--text); }
+
+.widget .widget-desc{
+  margin-top: 8px;
+  font-size: 0.86rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.widget .status-bar{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 18px 18px;
+  padding: 7px 12px;
+  border-radius: var(--radius-s);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+.widget .status-bar .dot{
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-bar.status-complete{ background: var(--status-good-soft); color: var(--status-good); }
+.status-bar.status-complete .dot{ background: var(--status-good); }
+
+.status-bar.status-progress{ background: var(--status-progress-soft); color: var(--status-progress); }
+.status-bar.status-progress .dot{ background: var(--status-progress); }
+
+.status-bar.status-planned{ background: var(--status-planned-soft); color: var(--status-planned); }
+.status-bar.status-planned .dot{ background: var(--status-planned); }
+
+/* floating link bubbles, revealed on hover/focus */
+.widget .bubbles{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.widget .bubble{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--surface-raised);
+  border: 1px solid var(--accent);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: auto;
+  box-shadow: 0 10px 22px -8px rgba(0,0,0,0.5);
+}
+
+.widget:hover .bubble,
+.widget:focus-within .bubble{
+  opacity: 1;
+  transform: scale(1);
+}
+
+.widget .bubble.bubble-1{ top: -18px;  right: 28px; transition-delay: 0.02s; }
+.widget .bubble.bubble-2{ top: 34px;   right: -34px; transition-delay: 0.08s; }
+
+@media (max-width: 900px){
+  .widget-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px){
+  .widget-grid{ grid-template-columns: 1fr; }
+  .widget .bubble{ position: static; opacity: 1; transform: none; display: inline-flex; margin: 6px 6px 0 0; }
+  .widget .bubbles{ position: static; padding: 0 18px 16px; display: flex; flex-wrap: wrap; }
+}
+
+/* ============================================================
+   TIMELINE LAYOUT — shared by research.html and leadership.html
+   most recent entry at the top
+   ============================================================ */
+
+.timeline{
+  position: relative;
+  padding-left: 36px;
+  border-left: 1px solid var(--line);
+}
+
+.timeline-entry{
+  position: relative;
+  margin-bottom: 52px;
+}
+.timeline-entry:last-child{ margin-bottom: 0; }
+
+.timeline-entry::before{
+  content: "";
+  position: absolute;
+  left: -41px;
+  top: 6px;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+}
+
+.timeline-entry .entry-date{
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-2);
+  margin-bottom: 10px;
+}
+
+.entry-card{
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-m);
+  padding: 20px;
+}
+
+.entry-card .entry-thumb{
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-s);
+  overflow: hidden;
+}
+.entry-card .entry-thumb img{ width: 100%; height: 100%; object-fit: cover; }
+
+.entry-card h3{ font-size: 1.15rem; color: var(--text); }
+
+.entry-card .entry-org{
+  font-size: 0.85rem;
+  color: var(--accent-2);
+  margin-top: 4px;
+}
+
+.entry-card .entry-desc{
+  margin-top: 12px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+.entry-links{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.entry-links a{
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 13px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.entry-links a:hover{
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 640px){
+  .timeline{ padding-left: 24px; }
+  .timeline-entry::before{ left: -29px; }
+  .entry-card{ grid-template-columns: 1fr; }
+  .entry-card .entry-thumb{ width: 100px; }
+}
+
+/* ============================================================
+   ACADEMICS PAGE (academics.html) — coursework by semester
+   ============================================================ */
+
+.degree-block{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-top: 18px;
+}
+.degree-block .degree-item{
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.degree-block .degree-item strong{
+  color: var(--accent-2);
+  font-weight: 500;
+}
+
+.semester{
+  margin-bottom: 56px;
+}
+.semester:last-child{ margin-bottom: 0; }
+
+.semester h2{
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 1.3rem;
+  color: var(--text);
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.semester h2 .semester-tag{
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--accent-2);
+}
+
+/* planned semesters sit further in the future — dashed divider and
+   slightly quieter text tell them apart from completed coursework */
+.semester-planned h2{
+  border-bottom-style: dashed;
+}
+.semester-planned h2 .semester-tag{
+  color: var(--status-planned);
+}
+.semester-planned .class-card{
+  opacity: 0.82;
+}
+
+.class-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.class-card{
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-m);
+  padding: 18px 18px 16px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.class-card:hover{
+  border-color: var(--line);
+  transform: translateY(-2px);
+}
+
+.class-card .class-code{
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-2);
+}
+
+.class-card h3{
+  font-size: 1rem;
+  color: var(--text);
+  margin-top: 6px;
+  line-height: 1.35;
+}
+
+.class-card .class-prof{
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+.class-card .class-meta{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.class-card .credits{
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.class-card .grade-chip{
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.grade-chip.status-complete{ background: var(--status-good-soft); color: var(--status-good); }
+.grade-chip.status-progress{ background: var(--status-progress-soft); color: var(--status-progress); }
+.grade-chip.status-planned{ background: var(--status-planned-soft); color: var(--status-planned); }
+
+/* ============================================================
+   LEADERSHIP PAGE (leadership.html) — Spotlight + Roster
+   one featured role up top, everything else in a compact roster
+   ============================================================ */
+
+.spotlight{
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+  padding: 36px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  margin-bottom: 64px;
+}
+
+.spotlight-media{
+  position: relative;
+}
+.spotlight-media img{
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-m);
+}
+.spotlight-media .spotlight-tag{
+  position: absolute;
+  top: 14px; left: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 5px 11px;
+  border-radius: 999px;
+}
+
+.spotlight-content .spotlight-dates{
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-2);
+}
+
+.spotlight-content h2{
+  font-size: 1.8rem;
+  color: var(--text);
+  margin-top: 8px;
+}
+
+.spotlight-content .spotlight-org{
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.spotlight-content .spotlight-desc{
+  margin-top: 18px;
+  font-size: 0.96rem;
+  color: var(--text-dim);
+  line-height: 1.65;
+  max-width: 60ch;
+}
+
+/* pulled-out stat row */
+.spotlight-stats{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.spotlight-stats .stat .stat-num{
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  color: var(--accent);
+  line-height: 1;
+}
+.spotlight-stats .stat .stat-label{
+  margin-top: 4px;
+  font-size: 0.76rem;
+  color: var(--text-faint);
+  line-height: 1.3;
+}
+
+/* condensed milestone list, distinct from the main .timeline pattern */
+.spotlight-milestones{
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.spotlight-milestones .milestones-label{
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+}
+
+.milestone-row{
+  display: flex;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px dashed var(--line-soft);
+}
+.milestone-row:first-child{ border-top: none; padding-top: 0; }
+
+.milestone-row .milestone-date{
+  flex-shrink: 0;
+  width: 100px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--accent-2);
+}
+
+.milestone-row .milestone-text{
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.spotlight-content .entry-links{ margin-top: 28px; }
+
+/* roster: everything else, compact */
+.roster-heading{
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  margin-bottom: 20px;
+}
+
+.roster-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.roster-card{
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-m);
+  padding: 18px 20px;
+}
+
+.roster-card .roster-dates{
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent-2);
+}
+
+.roster-card h3{
+  font-size: 1rem;
+  color: var(--text);
+  margin-top: 6px;
+}
+
+.roster-card .roster-org{
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin-top: 3px;
+}
+
+.roster-card .roster-desc{
+  margin-top: 10px;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+@media (max-width: 760px){
+  .spotlight{ grid-template-columns: 1fr; padding: 24px; }
+  .spotlight-media img{ aspect-ratio: 16 / 10; }
+  .spotlight-stats{ grid-template-columns: repeat(2, 1fr); }
+  .milestone-row{ flex-direction: column; gap: 4px; }
+  .milestone-row .milestone-date{ width: auto; }
+}
