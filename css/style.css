@@ -256,10 +256,9 @@ p{ margin: 0; }
 }
 
 .topnav .home-link .mark{
-  width: 28px; height: 28px;
-  border-radius: 50%;
+  width: 38px; height: 38px;
+  border-radius: 100%;
   overflow: hidden;
-  border: 1px solid var(--line);
   flex-shrink: 0;
 }
 .topnav .home-link .mark img{ width: 100%; height: 100%; object-fit: cover; }
