@@ -393,7 +393,7 @@ body[data-theme]{ overflow-x: clip; }
 }
 
 .bio-card .portrait{
-  width: 170px; height: 170px;
+  width: 120px; height: 120px;
   flex-shrink: 0;
   border-radius: 50%;
   overflow: hidden;
@@ -405,7 +405,7 @@ body[data-theme]{ overflow-x: clip; }
 .bio-card .bio-body{ min-width: 0; }
 
 .bio-card h1{
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   color: var(--text);
 }
 
