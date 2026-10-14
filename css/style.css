@@ -7,39 +7,43 @@
 
 :root{
   /* --- HUB palette (index.html — no data-theme override) ---
-     Sampled from the neon-star reference image: black canvas, hot
-     pink/magenta as the lead accent, electric cyan as the second.
-     Every page now shares this near-black base — pages differ only
-     in which two neon hues from the image they lead with. */
-  --bg:            #030308;
-  --bg-rgb:        3,3,8;
-  --bg-soft:       #0D0D1A;
-  --surface:       #14141F;
-  --surface-raised:#1D1D30;
-  --line:          rgba(255,62,165,0.4);    /* magenta star outline */
-  --line-soft:     rgba(52,229,255,0.18);   /* cyan star outline */
+     Built entirely from two of the sub-page swatches: Research's navy
+     + cream + periwinkle, and Art's lavender. Surfaces are pre-blended
+     mixes of those same literal colors (computed ahead of time, not
+     via CSS color-mix(), so this renders identically in every browser
+     — including older embedded webviews like VSCode's preview pane).
+     Each spoke node additionally borrows its own destination page's
+     accent color via the inline --node-accent set on each node in
+     index.html. */
+  --bg:            #001B2E;   /* Research: near-black navy */
+  --bg-rgb:        0,27,46;
+  --bg-soft:       #22344D;   /* navy + 15% lavender */
+  --surface:       #485071;   /* navy + 32% lavender */
+  --surface-raised:#6C6B92;   /* navy + 48% lavender */
+  --line:          rgba(226,194,255,0.3);   /* Art: lavender */
+  --line-soft:     rgba(255,239,211,0.14);  /* Research: cream */
 
-  --text:          #F5F2FF;
-  --text-dim:      #B4ADD6;
-  --text-faint:    #756E96;
+  --text:          #FFEFD3;   /* Research: cream */
+  --text-dim:      #ADBDFF;   /* Research: periwinkle */
+  --text-faint:    #5F74A1;   /* periwinkle + 45% navy */
 
-  --accent:        #FF3EA5;   /* neon magenta */
-  --accent-soft:   rgba(255,62,165,0.22);
-  --accent-2:      #34E5FF;   /* neon cyan */
-  --accent-2-soft: rgba(52,229,255,0.18);
+  --accent:        #E2C2FF;   /* Art: lavender */
+  --accent-soft:   rgba(226,194,255,0.2);
+  --accent-2:      #34E5FF;   /* Research: cyan */
+  --accent-2-soft: rgba(52,229,255,0.2);
 
-  /* star-field background image, used sparingly as a texture on a
-     handful of surfaces — see .starfield-surface and body below */
+  /* star-field texture — used only on the main page (see
+     body:not([data-theme]) below); subpages stay solid-colored */
   --star-bg: url("../images/star-field.png");
 
   /* status colors stay constant across every page/theme so the meaning
      (complete / in progress / planned) never gets confused by re-theming */
-  --status-good:     #4ED483;
-  --status-progress: #FFC24B;
-  --status-planned:  #9099C9;
-  --status-good-soft:     rgba(78,212,131,0.2);
-  --status-progress-soft: rgba(255,194,75,0.2);
-  --status-planned-soft:  rgba(144,153,201,0.2);
+  --status-good:     #6FA97A;
+  --status-progress: #D8A339;
+  --status-planned:  #8891AA;
+  --status-good-soft:     rgba(111,169,122,0.18);
+  --status-progress-soft: rgba(216,163,57,0.18);
+  --status-planned-soft:  rgba(136,145,170,0.18);
 
   /* --- type tokens --- */
   --font-display: 'Fraunces', 'Iowan Old Style', serif;
@@ -56,116 +60,119 @@
 
 /* ============================================================
    PER-PAGE THEMES
-   All pages share the same near-black base and the same star-field
-   texture (see body + .starfield-surface below) — the neon image is
-   the color scheme now, not five separate palettes. Each page keeps
-   a signature two-color pairing pulled from that same image, so
-   there's still a way to tell pages apart at a glance without ever
-   leaving the reference photo's palette.
+   Every value below is either a literal color straight from that
+   page's 5-color reference swatch, or a pre-computed blend of two
+   of that page's own colors (used only where a mid-step is needed,
+   e.g. a card surface between the bg and an accent — the comment
+   above each one says exactly which two colors and ratio). Nothing
+   here is an invented hue outside the reference palette, and none
+   of it depends on CSS color-mix() support.
    ============================================================ */
 
-/* ART — violet + green, straight off the star outlines */
+/* ART swatch: 258EA6 · 549F93 · 9FAF90 · E2B1B1 · E2C2FF
+   No color in this one is dark enough to anchor a dark theme, so
+   the page runs light instead — gallery-wall paper, not forced navy. */
 body[data-theme="art"]{
-  --bg:            #05030B;
-  --bg-rgb:        5,3,11;
-  --bg-soft:       #120A1F;
-  --surface:       #180F28;
-  --surface-raised:#231539;
-  --line:          rgba(177,77,255,0.45);
-  --line-soft:     rgba(57,255,136,0.2);
+  --bg:            #E2C2FF;
+  --bg-rgb:        226,194,255;
+  --bg-soft:       #E2B1B1;
+  --surface:       #F2E4FF;   /* lavender + 55% white */
+  --surface-raised:#F5E4E4;   /* dusty pink + 65% white */
+  --line:          rgba(37,142,166,0.4);
+  --line-soft:     rgba(159,175,144,0.4);
 
-  --text:          #F2E9FF;
-  --text-dim:      #C7AAEA;
-  --text-faint:    #8A72B0;
+  --text:          #185C6C;   /* teal + 35% black */
+  --text-dim:      #258EA6;
+  --text-faint:    #458279;   /* teal-green + 18% black */
 
-  --accent:        #B14DFF;
-  --accent-soft:   rgba(177,77,255,0.22);
-  --accent-2:      #39FF88;
-  --accent-2-soft: rgba(57,255,136,0.18);
+  --accent:        #258EA6;
+  --accent-soft:   rgba(37,142,166,0.16);
+  --accent-2:      #549F93;
+  --accent-2-soft: rgba(84,159,147,0.22);
 }
 
-/* ELECTRONICS — neon green + cyan, the PCB solder-mask hues from the image */
+/* ELECTRONICS swatch: 363635 · 595A4A · B0FE76 · 81E979 · 8FBB99
+   dark PCB board — every surface step is charcoal blended toward olive. */
 body[data-theme="electronics"]{
-  --bg:            #030A06;
-  --bg-rgb:        3,10,6;
-  --bg-soft:       #0B1A0F;
-  --surface:       #0F2214;
-  --surface-raised:#153019;
+  --bg:            #363635;
+  --bg-rgb:        54,54,53;
+  --bg-soft:       #41413B;   /* charcoal + 30% olive */
+  --surface:       #595A4A;
+  --surface-raised:#6F816A;   /* olive + 40% sage */
+  --line:          rgba(176,254,118,0.32);
+  --line-soft:     rgba(143,187,153,0.3);
 
-  --line:          rgba(57,255,106,0.45);
-  --line-soft:     rgba(52,229,255,0.2);
+  --text:          #E3EEE6;   /* sage + 75% white */
+  --text-dim:      #8FBB99;
+  --text-faint:    #A4A49B;   /* olive + 45% white */
 
-  --text:          #E9FFEF;
-  --text-dim:      #9FE3B2;
-  --text-faint:    #5F9270;
-
-  --accent:        #39FF6A;
-  --accent-soft:   rgba(57,255,106,0.24);
-  --accent-2:      #34E5FF;
-  --accent-2-soft: rgba(52,229,255,0.2);
+  --accent:        #B0FE76;
+  --accent-soft:   rgba(176,254,118,0.18);
+  --accent-2:      #81E979;
+  --accent-2-soft: rgba(129,233,121,0.2);
 }
 
-/* RESEARCH & INTERNSHIP — bright blue + cyan */
+/* RESEARCH & INTERNSHIP swatch: ADBDFF · 001B2E · 3185FC · 34E5FF · FFEFD3
+   deep navy, with surfaces stepped up toward bright blue. */
 body[data-theme="research"]{
-  --bg:            #02040D;
-  --bg-rgb:        2,4,13;
-  --bg-soft:       #0A1330;
-  --surface:       #0D1A3D;
-  --surface-raised:#12275C;
+  --bg:            #001B2E;
+  --bg-rgb:        0,27,46;
+  --bg-soft:       #092E53;   /* navy + 18% bright blue */
+  --surface:       #114076;   /* navy + 35% bright blue */
+  --surface-raised:#195299;   /* navy + 52% bright blue */
+  --line:          rgba(49,133,252,0.38);
+  --line-soft:     rgba(173,189,255,0.22);
 
-  --line:          rgba(63,140,255,0.45);
-  --line-soft:     rgba(52,229,255,0.22);
+  --text:          #FFEFD3;
+  --text-dim:      #ADBDFF;
+  --text-faint:    #5F74A1;   /* periwinkle + 45% navy */
 
-  --text:          #E9F1FF;
-  --text-dim:      #9FBBE8;
-  --text-faint:    #5F76A8;
-
-  --accent:        #3F8CFF;
-  --accent-soft:   rgba(63,140,255,0.24);
+  --accent:        #3185FC;
+  --accent-soft:   rgba(49,133,252,0.2);
   --accent-2:      #34E5FF;
   --accent-2-soft: rgba(52,229,255,0.2);
 }
 
-/* LEADERSHIP — purple + magenta, the regal pairing from the image */
+/* LEADERSHIP swatch: E8D7F1 · D3BCCC · A167A5 · 4A306D · 0E273C
+   regal dark purple — surfaces stepped from navy up into the purples. */
 body[data-theme="leadership"]{
-  --bg:            #08020F;
-  --bg-rgb:        8,2,15;
-  --bg-soft:       #180A26;
-  --surface:       #1D0E30;
-  --surface-raised:#291441;
+  --bg:            #0E273C;
+  --bg-rgb:        14,39,60;
+  --bg-soft:       #1D2948;   /* navy + 25% deep purple */
+  --surface:       #4A306D;
+  --surface-raised:#6D4683;   /* deep purple + 40% magenta */
+  --line:          rgba(161,103,165,0.4);
+  --line-soft:     rgba(211,188,204,0.24);
 
-  --line:          rgba(194,77,255,0.45);
-  --line-soft:     rgba(255,62,165,0.22);
+  --text:          #E8D7F1;
+  --text-dim:      #D3BCCC;
+  --text-faint:    #7A798B;   /* dusty mauve + 45% navy */
 
-  --text:          #F3E9FF;
-  --text-dim:      #CBA9E3;
-  --text-faint:    #8A6CA8;
-
-  --accent:        #C24DFF;
-  --accent-soft:   rgba(194,77,255,0.24);
-  --accent-2:      #FF3EA5;
-  --accent-2-soft: rgba(255,62,165,0.2);
+  --accent:        #A167A5;
+  --accent-soft:   rgba(161,103,165,0.24);
+  --accent-2:      #D3BCCC;
+  --accent-2-soft: rgba(211,188,204,0.24);
 }
 
-/* ACADEMICS — orange + yellow, the warm end of the same star field */
+/* ACADEMICS swatch: CCC9A1 · F0FFCE · A53F2B · 4C230A · 280004
+   warm parchment-and-seal — surfaces stepped from maroon up into rust. */
 body[data-theme="academics"]{
-  --bg:            #0A0502;
-  --bg-rgb:        10,5,2;
-  --bg-soft:       #1F130A;
-  --surface:       #26160B;
-  --surface-raised:#331D0F;
+  --bg:            #280004;
+  --bg-rgb:        40,0,4;
+  --bg-soft:       #310906;   /* maroon + 25% dark brown */
+  --surface:       #4C230A;
+  --surface-raised:#702E17;   /* dark brown + 40% rust */
+  --line:          rgba(204,201,161,0.4);
+  --line-soft:     rgba(240,255,206,0.18);
 
-  --line:          rgba(255,140,63,0.45);
-  --line-soft:     rgba(255,217,63,0.22);
+  --text:          #F0FFCE;
+  --text-dim:      #CCC9A1;
+  --text-faint:    #826F5A;   /* khaki + 45% maroon */
 
-  --text:          #FFF3E3;
-  --text-dim:      #E3B98F;
-  --text-faint:    #A08060;
-
-  --accent:        #FF8C3F;
-  --accent-soft:   rgba(255,140,63,0.24);
-  --accent-2:      #FFD93F;
-  --accent-2-soft: rgba(255,217,63,0.2);
+  --accent:        #A53F2B;
+  --accent-soft:   rgba(165,63,43,0.24);
+  --accent-2:      #CCC9A1;
+  --accent-2-soft: rgba(204,201,161,0.22);
 }
 
 *{ box-sizing: border-box; }
@@ -173,15 +180,18 @@ html{ scroll-behavior: smooth; }
 
 body{
   margin: 0;
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+}
 
-  /* star-field texture as the page-wide backdrop: a per-theme tinted
-     scrim sits over the image so it reads as a faint pattern, not
-     the loud original artwork, and never fights with page content */
+/* MAIN PAGE ONLY: the hub's body has no data-theme attribute, so this
+   rule never applies to the sub-pages. A tinted scrim sits over the
+   star image so it reads as a faint texture behind the content. */
+body:not([data-theme]){
   background-color: var(--bg);
   background-image:
     linear-gradient(180deg, rgba(var(--bg-rgb),0.92), rgba(var(--bg-rgb),0.97)),
@@ -190,18 +200,6 @@ body{
   background-position: center top, center top;
   background-repeat: no-repeat, repeat;
   background-attachment: fixed, fixed;
-}
-
-/* shared helper: a bolder, still-tasteful dose of the same star field,
-   used only on a handful of standout surfaces (see usages below) */
-.starfield-surface{
-  background-color: var(--surface);
-  background-image:
-    linear-gradient(165deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72)),
-    var(--star-bg);
-  background-size: cover, 220px 220px;
-  background-position: center, center;
-  background-repeat: no-repeat, repeat;
 }
 
 img{ max-width: 100%; display: block; }
@@ -256,9 +254,10 @@ p{ margin: 0; }
 }
 
 .topnav .home-link .mark{
-  width: 38px; height: 38px;
-  border-radius: 100%;
+  width: 28px; height: 28px;
+  border-radius: 50%;
   overflow: hidden;
+  border: 1px solid var(--line);
   flex-shrink: 0;
 }
 .topnav .home-link .mark img{ width: 100%; height: 100%; object-fit: cover; }
@@ -273,7 +272,36 @@ p{ margin: 0; }
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 64px 32px 40px;
+  position: relative;
+  isolation: isolate;
 }
+
+/* subtle star texture behind every sub-page header. It runs the full width
+   of the screen and fades into the solid page color at the bottom, so there
+   is no visible edge. Make it stronger/weaker with the two scrim alphas
+   (0.78 and 0.92): lower = more stars. */
+.page-header::before{
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(180deg,
+      rgba(var(--bg-rgb), 0.78) 0%,
+      rgba(var(--bg-rgb), 0.92) 55%,
+      var(--bg) 100%),
+    var(--star-bg);
+  background-size: auto, 300px 300px;
+  background-position: center top, center top;
+  background-repeat: no-repeat, repeat;
+}
+
+/* the full-width texture is wider than the layout, so clip any sideways overflow */
+body[data-theme]{ overflow-x: clip; }
 
 .page-header .eyebrow{
   font-family: var(--font-mono);
@@ -313,15 +341,24 @@ p{ margin: 0; }
 }
 
 /* ============================================================
-   HUB PAGE (index.html) — spiderweb / radial navigation
+   HUB PAGE (index.html) — profile header + zigzag trail
+   A wide profile card sits at the top; the five section links
+   (circles) cascade down the page, alternating left / right and
+   joined by one dotted line that runs through their centers.
+   Everything is sized from --trail-w, so the whole trail scales
+   down together on narrower screens.
    ============================================================ */
 
 .hub{
+  --hub-pad:  clamp(20px, 5vw, 80px);                        /* clear space at the screen edges */
+  --trail-w:  min(1100px, calc(100vw - 2 * var(--hub-pad))); /* width of header + trail */
+  --ring:     calc(var(--trail-w) * 0.2618);                 /* circle size: 288px at full width */
+
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 48px 24px;
+  padding: 40px var(--hub-pad) 96px;
   position: relative;
   overflow: hidden;
 }
@@ -330,95 +367,72 @@ p{ margin: 0; }
 .hub::before{
   content: "";
   position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   width: 1100px; height: 1100px;
   background: radial-gradient(circle, var(--accent-soft) 0%, transparent 62%);
   pointer-events: none;
 }
 
-.web{
-  position: relative;
-  width: min(900px, 92vw);
-  aspect-ratio: 1 / 1;
-}
-
-.web-lines{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-.web-lines line{
-  stroke: var(--line);
-  stroke-width: 1.5;
-  stroke-dasharray: 3 7;
-}
-.web-lines circle.orbit{
-  fill: none;
-  stroke: var(--line-soft);
-  stroke-width: 1;
-}
-
-/* central bio card */
+/* ---------- profile header card ---------- */
 .bio-card{
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(260px, 27vw);
-  min-width: 190px;
-  background-color: var(--surface);
-  background-image:
-    linear-gradient(165deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72)),
-    var(--star-bg);
-  background-size: cover, 220px 220px;
-  background-position: center, center;
-  background-repeat: no-repeat, repeat;
+  position: relative;
+  z-index: 6;
+  width: var(--trail-w);
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-l);
-  padding: 22px 20px;
-  text-align: center;
+  padding: 24px 28px;
+  text-align: left;
   box-shadow: 0 30px 60px -20px rgba(0,0,0,0.55);
-  z-index: 5;
-  animation: hub-fade-in 0.7s ease both;
+  animation: header-fade-in 0.7s ease both;
 }
 
 .bio-card .portrait{
-  width: 76px; height: 76px;
+  width: 170px; height: 170px;
+  flex-shrink: 0;
   border-radius: 50%;
-  margin: 0 auto 14px;
   overflow: hidden;
   border: 2px solid var(--accent);
-  box-shadow: 0 0 0 5px var(--accent-soft);
+  box-shadow: 0 0 0 6px var(--accent-soft);
 }
 .bio-card .portrait img{ width: 100%; height: 100%; object-fit: cover; }
 
+.bio-card .bio-body{ min-width: 0; }
+
 .bio-card h1{
-  font-size: 1.2rem;
+  font-size: 2.5rem;
   color: var(--text);
 }
 
 .bio-card .role{
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: var(--accent-2);
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .bio-card p.bio-text{
-  margin-top: 14px;
-  font-size: 0.8rem;
+  margin-top: 10px;
+  font-size: 0.86rem;
   color: var(--text-dim);
-  line-height: 1.5;
+  line-height: 1.55;
+  max-width: 78ch;
 }
 
 .bio-card .bio-links{
   display: flex;
-  gap: 14px;
-  justify-content: center;
-  margin-top: 18px;
+  gap: 16px;
+  justify-content: flex-start;
+  margin-top: 12px;
 }
 .bio-card .bio-links a{
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: var(--text-dim);
   border-bottom: 1px solid transparent;
   transition: color 0.2s, border-color 0.2s;
@@ -428,7 +442,39 @@ p{ margin: 0; }
   border-color: var(--accent);
 }
 
-/* nodes positioned around the web via inline --x / --y percentages */
+@keyframes header-fade-in{
+  from{ opacity: 0; transform: translateY(-10px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- the zigzag trail ---------- */
+.trail{
+  position: relative;
+  width: var(--trail-w);
+  max-width: 100%;
+  aspect-ratio: 1100 / 1440;   /* height scales with width, so % positions stay put */
+}
+
+/* one dotted line through every circle's center; the SVG is stretched over
+   the trail, and non-scaling-stroke keeps the dots the same size */
+.trail-line{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.trail-line polyline{
+  fill: none;
+  stroke: var(--accent);
+  stroke-opacity: 0.6;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 11;     /* round dots, ~11px apart */
+  vector-effect: non-scaling-stroke;
+}
+
+/* nodes are placed on the trail via inline --x / --y percentages */
 .node{
   position: absolute;
   top: var(--y);
@@ -437,7 +483,6 @@ p{ margin: 0; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
   text-align: center;
   z-index: 4;
   animation: hub-fade-in 0.7s ease both;
@@ -446,7 +491,7 @@ p{ margin: 0; }
 
 .node .icon-ring{
   position: relative;
-  width: 195px; height: 195px;
+  width: var(--ring); height: var(--ring);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -455,11 +500,11 @@ p{ margin: 0; }
 
 .node .icon-ring::before{
   /* halo, hidden until hover — color comes from the inline --node-accent
-     set on each <a class="node">, so every spoke glows in its
+     set on each <a class="node">, so every circle glows in its
      destination page's own accent color */
   content: "";
   position: absolute;
-  inset: -27px;
+  inset: calc(var(--ring) * -0.146);
   border-radius: 50%;
   border: 1px solid var(--node-accent, var(--accent));
   opacity: 0;
@@ -470,7 +515,7 @@ p{ margin: 0; }
 .node .icon-ring::after{
   content: "";
   position: absolute;
-  inset: -27px;
+  inset: calc(var(--ring) * -0.146);
   border-radius: 50%;
   background: var(--node-glow, var(--accent-soft));
   filter: blur(6px);
@@ -489,11 +534,18 @@ p{ margin: 0; }
   transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
+/* label hangs below its circle without moving the circle off the line */
 .node .label{
-  font-size: 0.85rem;
+  position: absolute;
+  top: calc(100% + var(--ring) * 0.104);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(var(--ring) * 1.3);
+  font-size: clamp(0.85rem, calc(var(--trail-w) * 0.0196), 1.35rem);
+  line-height: 1.25;
   color: var(--text-dim);
   transition: color 0.2s ease;
-  max-width: 120px;
 }
 
 .node:hover .icon-ring img,
@@ -521,53 +573,16 @@ p{ margin: 0; }
   to{ opacity: 1; transform: translate(-50%, -50%); }
 }
 
-@keyframes orbit-spin{
-  from{ transform: rotate(0deg); }
-  to{ transform: rotate(360deg); }
-}
-.web-lines .orbit-group{
-  transform-origin: 450px 450px;
-  animation: orbit-spin 160s linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce){
-  .web-lines .orbit-group{ animation: none; }
-}
-
-/* small screens: collapse the web into a stacked list */
+/* phones: stack the header card; the trail just keeps scaling down */
 @media (max-width: 720px){
-  .hub{ min-height: auto; padding: 40px 20px 60px; }
-  .web{ width: 100%; aspect-ratio: auto; }
-  .web-lines{ display: none; }
+  .hub{ padding-top: 24px; }
   .bio-card{
-    position: static;
-    transform: none;
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto 32px;
-    animation: none;
-  }
-  .node{
-    position: static;
-    transform: none;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 16px;
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto 4px;
-    padding: 12px 8px;
-    animation: none;
-  }
-  .node .icon-ring{ width: 64px; height: 64px; flex-shrink: 0; }
-  .node .icon-ring::before,
-  .node .icon-ring::after{ inset: -8px; }
-  .node .label{ text-align: left; max-width: none; font-size: 0.95rem; }
-  .node-list{
-    display: flex;
     flex-direction: column;
-    align-items: center;
+    text-align: center;
+    padding: 22px 18px;
+    gap: 16px;
   }
+  .bio-card .bio-links{ justify-content: center; }
 }
 
 /* ============================================================
@@ -659,13 +674,7 @@ p{ margin: 0; }
 .widget{
   position: relative;
   z-index: 1;
-  background-color: var(--surface);
-  background-image:
-    linear-gradient(165deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72)),
-    var(--star-bg);
-  background-size: cover, 220px 220px;
-  background-position: center, center;
-  background-repeat: no-repeat, repeat;
+  background: var(--surface);
   border: 1px solid var(--line-soft);
   border-radius: var(--radius-m);
   overflow: visible;
@@ -807,7 +816,7 @@ p{ margin: 0; }
 
 .entry-card{
   display: grid;
-  grid-template-columns: 140px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: 24px;
   background: var(--surface);
   border: 1px solid var(--line-soft);
@@ -817,7 +826,8 @@ p{ margin: 0; }
 
 .entry-card .entry-thumb{
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 16 / 10;
+  align-self: start;
   border-radius: var(--radius-s);
   overflow: hidden;
 }
@@ -836,7 +846,6 @@ p{ margin: 0; }
   font-size: 0.88rem;
   color: var(--text-dim);
   line-height: 1.6;
-  max-width: 62ch;
 }
 
 .entry-links{
@@ -864,7 +873,7 @@ p{ margin: 0; }
   .timeline{ padding-left: 24px; }
   .timeline-entry::before{ left: -29px; }
   .entry-card{ grid-template-columns: 1fr; }
-  .entry-card .entry-thumb{ width: 100px; }
+  .entry-card .entry-thumb{ width: 100%; }
 }
 
 /* ============================================================
@@ -994,20 +1003,21 @@ p{ margin: 0; }
   grid-template-columns: 320px 1fr;
   gap: 40px;
   padding: 36px;
-  background-color: var(--surface);
-  background-image:
-    linear-gradient(165deg, rgba(0,0,0,0.55), rgba(0,0,0,0.72)),
-    var(--star-bg);
-  background-size: cover, 220px 220px;
-  background-position: center, center;
-  background-repeat: no-repeat, repeat;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-l);
   margin-bottom: 64px;
 }
 
 .spotlight-media{
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;            /* space between the two images */
+}
+
+.media-item{
+  position: relative;   /* each tag positions against its own image */
+  margin: 0;            /* <figure> adds default browser margins */
 }
 .spotlight-media img{
   width: 100%;

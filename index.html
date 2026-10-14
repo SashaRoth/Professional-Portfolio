@@ -11,39 +11,32 @@
 <!--
   HUB PAGE
   ---------
-  Five "node" links are arranged around the center bio card using
-  the --x / --y custom properties set inline on each .node element
-  (percentages within the 900x900 .web box). To rearrange topics,
-  just swap the --x/--y pairs, the SVG line endpoints, and the
-  href/label/icon inside each node. Each node also sets its own
-  --node-accent, matching that destination page's theme color —
-  update it if you change a page's palette in css/style.css.
+  A profile card sits at the top; the five section links ("nodes")
+  cascade down the page in a zigzag, joined by one dotted line.
 
-  To replace an icon: swap the <img src="images/cat.png"> for your
-  own square image (ideally 200x200px or larger, it gets cropped
-  into a circle).
+  Each node is placed with --x / --y (percentages of the .trail box):
+    --x : 28% = left column, 72% = right column
+    --y : how far down the trail (rows are ~18% apart)
+  The dotted line is the <polyline> in the SVG: its points use the same
+  x / y numbers, in the same order as the nodes (top to bottom). To add,
+  remove, or reorder a topic, update the node AND its polyline point.
+
+  Each node also sets its own --node-accent, matching that destination
+  page's theme color — update it if you change a page's palette in
+  css/style.css.
+
+  To replace an icon: swap the <img src> for your own square image
+  (ideally 300x300px or larger, it gets cropped into a circle).
 -->
 
 <main class="hub">
-  <div class="web">
 
-    <!-- connecting lines + faint orbit ring, purely decorative -->
-    <svg class="web-lines" viewBox="0 0 900 900" aria-hidden="true">
-      <g class="orbit-group">
-        <circle class="orbit" cx="450" cy="450" r="380"></circle>
-      </g>
-      <line x1="450" y1="450" x2="450"   y2="70"></line>
-      <line x1="450" y1="450" x2="811.5" y2="332.5"></line>
-      <line x1="450" y1="450" x2="673.4" y2="757.4"></line>
-      <line x1="450" y1="450" x2="226.6" y2="757.4"></line>
-      <line x1="450" y1="450" x2="88.5"  y2="332.5"></line>
-    </svg>
-
-    <!-- center: photo + bio -->
-    <div class="bio-card">
-      <div class="portrait">
-        <img src="images/sasha.jpg" alt="Portrait of me">
-      </div>
+  <!-- top: photo + bio -->
+  <header class="bio-card">
+    <div class="portrait">
+      <img src="images/sasha.jpg" alt="Portrait of me">
+    </div>
+    <div class="bio-body">
       <h1>Alexander Sasha Roth</h1>
       <p class="role">Engineer · Artist · Student</p>
       <p class="bio-text">
@@ -55,34 +48,43 @@
         <a href="https://www.linkedin.com/in/sasha-roth-09961934a/">LinkedIn</a>
       </div>
     </div>
+  </header>
 
-    <!-- nodes: order = top, upper-right, lower-right, lower-left, upper-left -->
-    <a class="node" href="research.html" style="--x: 50%;    --y: 7.78%;  --delay: 0.05s; --node-accent: #3185FC; --node-glow: rgba(49,133,252,0.22);">
-      <span class="icon-ring"><img src="images/smartwheel_pcb.jpeg" alt=""></span>
+  <!-- the zigzag trail -->
+  <nav class="trail" aria-label="Portfolio sections">
+
+    <!-- dotted line: starts under the profile card, then runs through each node's center -->
+    <svg class="trail-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <polyline points="50,0 28,11.81 72,29.86 28,47.92 72,65.97 28,84.03"></polyline>
+    </svg>
+
+    <!-- nodes, top to bottom: left, right, left, right, left -->
+    <a class="node" href="research.html" style="--x: 28%; --y: 15.81%; --delay: 0.05s; --node-accent: #3185FC; --node-glow: rgba(49,133,252,0.22);">
+      <span class="icon-ring"><img src="images/cooper.jpeg" alt=""></span>
       <span class="label">Research &amp; Internship</span>
     </a>
 
-    <a class="node" href="electronics.html" style="--x: 90.17%; --y: 36.94%; --delay: 0.15s; --node-accent: #B0FE76; --node-glow: rgba(176,254,118,0.22);">
+    <a class="node" href="electronics.html" style="--x: 72%; --y: 29.86%; --delay: 0.15s; --node-accent: #B0FE76; --node-glow: rgba(176,254,118,0.22);">
       <span class="icon-ring"><img src="images/speed_controller.jpeg" alt=""></span>
       <span class="label">Electronics</span>
     </a>
 
-    <a class="node" href="leadership.html" style="--x: 74.82%; --y: 84.16%; --delay: 0.25s; --node-accent: #A167A5; --node-glow: rgba(161,103,165,0.22);">
+    <a class="node" href="leadership.html" style="--x: 28%; --y: 47.92%; --delay: 0.25s; --node-accent: #A167A5; --node-glow: rgba(161,103,165,0.22);">
       <span class="icon-ring"><img src="images/serc_zack.JPG" alt=""></span>
       <span class="label">Leadership</span>
     </a>
 
-    <a class="node" href="academics.html" style="--x: 25.18%; --y: 84.16%; --delay: 0.35s; --node-accent: #A53F2B; --node-glow: rgba(165,63,43,0.22);">
+    <a class="node" href="academics.html" style="--x: 72%; --y: 65.97%; --delay: 0.35s; --node-accent: #A53F2B; --node-glow: rgba(165,63,43,0.22);">
       <span class="icon-ring"><img src="images/embeddedsys.jpeg" alt=""></span>
       <span class="label">Academics</span>
     </a>
 
-    <a class="node" href="art.html" style="--x: 9.83%;  --y: 36.94%; --delay: 0.45s; --node-accent: #258EA6; --node-glow: rgba(37,142,166,0.22);">
+    <a class="node" href="art.html" style="--x: 28%; --y: 84.03%; --delay: 0.45s; --node-accent: #258EA6; --node-glow: rgba(37,142,166,0.22);">
       <span class="icon-ring"><img src="images/paintings.jpg" alt=""></span>
       <span class="label">Art</span>
     </a>
 
-  </div>
+  </nav>
 </main>
 
 </body>
